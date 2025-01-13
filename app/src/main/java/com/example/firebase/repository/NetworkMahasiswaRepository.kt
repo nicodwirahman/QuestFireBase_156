@@ -37,7 +37,14 @@ class NetworkMahasiswaRepository(private val firestore: FirebaseFirestore) : Mah
 
 
     override suspend fun updateMahasiswa(nim: String, mahasiswa: Mahasiswa) {
-
+        try {
+            firestore.collection("Mahasiswa")
+                .document(nim)
+                .set(mahasiswa)
+                .await()
+        } catch (e: Exception) {
+            throw Exception("Gagal mengupdate data mahasiswa: ${e.message}")
+        }
     }
 
     override suspend fun deleteMahasiswa(nim: String) {
