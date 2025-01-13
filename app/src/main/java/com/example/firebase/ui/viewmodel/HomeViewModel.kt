@@ -10,7 +10,6 @@ import com.example.firebase.repository.MahasiswaRepository
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-
 sealed class HomeUiState {
     data class Success(val mahasiswa: List<Mahasiswa>) : HomeUiState()
     data class Error(val exception: Throwable) : HomeUiState()
@@ -19,32 +18,30 @@ sealed class HomeUiState {
 
 class HomeViewModel(
     private val mhs: MahasiswaRepository
-
-): ViewModel(){
-    var mhsUiState : HomeUiState by mutableStateOf(HomeUiState.Loading)
+) : ViewModel() {
+    var mhsUiState: HomeUiState by mutableStateOf(HomeUiState.Loading)
         private set
 
     init {
         getMhs()
     }
 
-    fun getMhs(){
+    fun getMhs() {
         viewModelScope.launch {
             mhs.getAllMahasiswa()
                 .onStart {
                     mhsUiState = HomeUiState.Loading
                 }
-                .catch {
-                    mhsUiState = HomeUiState.Error(it)
+                .catch { exception ->
+                    mhsUiState = HomeUiState.Error(exception)
                 }
-                .collect{
-                    mhsUiState = if (it.isEmpty()){
+                .collect { mahasiswaList ->
+                    mhsUiState = if (mahasiswaList.isEmpty()) {
                         HomeUiState.Error(Exception("Belum ada daftar mahasiswa"))
-                    } else{
-                        HomeUiState.Success(it)
+                    } else {
+                        HomeUiState.Success(mahasiswaList)
                     }
                 }
-
         }
     }
 }
