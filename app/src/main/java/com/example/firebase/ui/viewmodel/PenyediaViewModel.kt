@@ -13,6 +13,11 @@ object PenyediaViewModel {
                 MahasiswaAplication().container.mahasiswaRepository
             )
         }
+        initializer {
+            InsertViewModel(
+                MahasiswaAplication().container.mahasiswaRepository
+            )
+        }
     }
 }
 fun CreationExtras.MahasiswaAplication(): MahasiswaAplication =
