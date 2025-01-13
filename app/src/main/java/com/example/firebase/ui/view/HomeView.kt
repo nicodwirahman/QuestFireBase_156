@@ -1,6 +1,5 @@
 package com.example.firebase.ui.view
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -34,8 +32,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
@@ -43,7 +39,6 @@ import com.example.firebase.model.Mahasiswa
 import com.example.firebase.ui.viewmodel.HomeUiState
 import com.example.firebase.ui.viewmodel.HomeViewModel
 import com.example.firebase.ui.viewmodel.PenyediaViewModel
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -57,8 +52,7 @@ fun HomeScreen(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopAppBar(
-                title = {Text ("Home")}
-
+                title = { Text("Home") }
             )
         },
         floatingActionButton = {
@@ -76,9 +70,9 @@ fun HomeScreen(
             retryAction = { viewModel.getMhs() },
             modifier = Modifier.padding(innerPadding),
             onDetailClick = onDetailClick,
-            onDeleteClick = {
-
-                viewModel.getMhs()
+            onDeleteClick = { nim ->
+                viewModel.deleteMahasiswa(nim) // Hapus mahasiswa
+                viewModel.getMhs() // Perbarui daftar setelah penghapusan
             }
         )
     }
@@ -97,15 +91,15 @@ fun HomeStatus(
 
         is HomeUiState.Success ->
             if (homeUiState.mahasiswa.isEmpty()) {
-                return Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = "Tidak ada data kontak", style = MaterialTheme.typography.bodyMedium)
+                Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text(text = "Tidak ada data mahasiswa", style = MaterialTheme.typography.bodyMedium)
                 }
             } else {
                 MhsLayout(
                     mahasiswa = homeUiState.mahasiswa,
                     modifier = modifier.fillMaxWidth(),
                     onDetailClick = { onDetailClick(it.nim) },
-                    onDeleteClick = { onDeleteClick(it) }
+                    onDeleteClick = { onDeleteClick(it) } // Teruskan onDeleteClick ke MhsLayout
                 )
             }
         is HomeUiState.Error -> OnError(retryAction, modifier = modifier.fillMaxSize(),
@@ -116,12 +110,11 @@ fun HomeStatus(
 @Composable
 fun OnLoading(modifier: Modifier = Modifier) {
     Column(
-        modifier
-            .fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ) { CircularProgressIndicator()
-
+    ) {
+        CircularProgressIndicator()
     }
 }
 
@@ -133,7 +126,6 @@ fun OnError(retryAction: () -> Unit, modifier: Modifier = Modifier, message: Str
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.padding(16.dp)
         ) {
-
             Text(text = message, modifier = Modifier.padding(16.dp))
             Button(onClick = retryAction) {
                 Text("Retry")
@@ -160,7 +152,7 @@ fun MhsLayout(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { onDetailClick(mahasiswa) },
-                onDeleteClick = { onDeleteClick(it) }
+                onDeleteClick = { onDeleteClick(it) } // Teruskan onDeleteClick ke MhsCard
             )
         }
     }
@@ -170,8 +162,8 @@ fun MhsLayout(
 fun MhsCard(
     mahasiswa: Mahasiswa,
     modifier: Modifier = Modifier,
-    onDeleteClick:(String)->Unit={}
-){
+    onDeleteClick: (String) -> Unit = {}
+) {
     Card(
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
@@ -190,19 +182,17 @@ fun MhsCard(
                     style = MaterialTheme.typography.titleLarge
                 )
                 Spacer(Modifier.weight(1f))
-                IconButton(onClick = {onDeleteClick(mahasiswa.nim)}) {
+                IconButton(onClick = { onDeleteClick(mahasiswa.nim) }) { // Pastikan nim dikirim
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = null,
+                        contentDescription = "Delete Mahasiswa",
                     )
                 }
-
                 Text(
                     text = mahasiswa.nim,
                     style = MaterialTheme.typography.titleMedium
                 )
             }
-
             Text(
                 text = mahasiswa.kelas,
                 style = MaterialTheme.typography.titleMedium
