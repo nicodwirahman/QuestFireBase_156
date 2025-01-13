@@ -48,6 +48,14 @@ class NetworkMahasiswaRepository(private val firestore: FirebaseFirestore) : Mah
     }
 
     override suspend fun deleteMahasiswa(nim: String) {
+        try {
+            firestore.collection("Mahasiswa")
+                .document(nim) // Pastikan nim adalah documentId
+                .delete()
+                .await()
+        } catch (e: Exception) {
+            throw Exception("Gagal menghapus data mahasiswa dengan NIM $nim: ${e.message}")
+        }
 
     }
 
