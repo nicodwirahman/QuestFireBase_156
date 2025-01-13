@@ -3,6 +3,14 @@ package com.example.firebase.ui.viewmodel
 import com.example.firebase.model.Mahasiswa
 
 
+
+
+data class InsertUiState(
+    val insertUiEvent: MahasiswaEvent = MahasiswaEvent(),
+    val isEntryValid: FormErrorState = FormErrorState()
+)
+
+
 data class FormErrorState(
     val nim: String? = null,
     val nama: String? = null,
