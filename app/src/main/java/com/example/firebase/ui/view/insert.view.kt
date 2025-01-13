@@ -11,7 +11,45 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.firebase.ui.viewmodel.FormErrorState
 import com.example.firebase.ui.viewmodel.MahasiswaEvent
+import com.example.firebase.ui.viewmodel.FormState
+import com.example.firebase.ui.viewmodel.InsertUiState
 
+@Composable
+fun InsertBodyMhs(
+    modifier: Modifier = Modifier,
+    onValueChange: (MahasiswaEvent) -> Unit,
+    uiState: InsertUiState,
+    onClick: () -> Unit,
+    homeUiState: FormState
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        FormMahasiswa(
+            mahasiswaEvent = uiState.insertUiEvent,
+            onValueChange = onValueChange,
+            errorState = uiState.isEntryValid,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Button(
+            onClick = onClick,
+            modifier = Modifier.fillMaxWidth(),
+            enabled = homeUiState !is FormState.Loading,
+        ) {
+            if (homeUiState is FormState.Loading) {
+                CircularProgressIndicator(
+                    color = Color.White,
+                    modifier = Modifier.size(20.dp).padding(end = 8.dp)
+                )
+                Text("Loading...")
+            } else {
+                Text("Add")
+            }
+        }
+    }
+}
 
 
 @Composable
