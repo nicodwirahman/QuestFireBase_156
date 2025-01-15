@@ -36,9 +36,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 import com.example.firebase.model.Mahasiswa
-import com.example.firebase.ui.viewmodel.HomeUiState
-import com.example.firebase.ui.viewmodel.HomeViewModel
-import com.example.firebase.ui.viewmodel.PenyediaViewModel
+import com.example.firebase.ui.viewmodel.Mahasiswa.HomeUiState
+import com.example.firebase.ui.viewmodel.Mahasiswa.HomeViewModel
+import com.example.firebase.ui.viewmodel.Mahasiswa.PenyediaViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -194,11 +194,19 @@ fun MhsCard(
                 )
             }
             Text(
-                text = mahasiswa.kelas,
+                text = mahasiswa.judulSkripsi,
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
                 text = mahasiswa.alamat,
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = mahasiswa.dosen1,
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = mahasiswa.dosen2,
                 style = MaterialTheme.typography.titleMedium
             )
         }

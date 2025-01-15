@@ -7,6 +7,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 interface AppContainer {
 
     val mahasiswaRepository: MahasiswaRepository
+
+
 }
 
 

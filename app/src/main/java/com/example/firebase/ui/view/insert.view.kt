@@ -9,13 +9,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.example.firebase.ui.viewmodel.FormErrorState
-import com.example.firebase.ui.viewmodel.MahasiswaEvent
-import com.example.firebase.ui.viewmodel.FormState
-import com.example.firebase.ui.viewmodel.InsertUiState
+import com.example.firebase.ui.viewmodel.Mahasiswa.FormErrorState
+import com.example.firebase.ui.viewmodel.Mahasiswa.MahasiswaEvent
+import com.example.firebase.ui.viewmodel.Mahasiswa.FormState
+import com.example.firebase.ui.viewmodel.Mahasiswa.InsertUiState
 import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.firebase.ui.viewmodel.*
+import com.example.firebase.ui.viewmodel.Mahasiswa.InsertViewModel
+import com.example.firebase.ui.viewmodel.Mahasiswa.PenyediaViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -188,32 +189,50 @@ fun FormMahasiswa(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = "Kelas")
-        Row {
-            kelas.forEach { kelas ->
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    RadioButton(
-                        selected = mahasiswaEvent.kelas == kelas,
-                        onClick = { onValueChange(mahasiswaEvent.copy(kelas = kelas)) }
-                    )
-                    Text(text = kelas)
-                }
-            }
-        }
-        Text(text = errorState.kelas ?: "", color = Color.Red)
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.alamat,
+            onValueChange = { onValueChange(mahasiswaEvent.copy(judulSkripsi = it)) },
+            label = { Text("judulSKiprisi") },
+            isError = errorState.alamat != null,
+            placeholder = { Text("judulSkripsi") },
+        )
+        Text(text = errorState.judulSkripsi ?: "", color = Color.Red)
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = mahasiswaEvent.angkatan,
+            value = mahasiswaEvent.judulSkripsi,
             onValueChange = { onValueChange(mahasiswaEvent.copy(angkatan = it)) },
             label = { Text("Angkatan") },
-            isError = errorState.angkatan != null,
+            isError = errorState.judulSkripsi != null,
             placeholder = { Text("Masukkan angkatan") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-        Text(text = errorState.angkatan ?: "", color = Color.Red)
+        Text(text = errorState.judulSkripsi ?: "", color = Color.Red)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.dosen1,
+            onValueChange = { onValueChange(mahasiswaEvent.copy(angkatan = it)) },
+            label = { Text("Angkatan") },
+            isError = errorState.dosen1 != null,
+            placeholder = { Text("Masukkan namadosen1") },
+        )
+        Text(text = errorState.dosen2 ?: "", color = Color.Red)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.dosen2,
+            onValueChange = { onValueChange(mahasiswaEvent.copy(angkatan = it)) },
+            label = { Text("Angkatan") },
+            isError = errorState.dosen2 != null,
+            placeholder = { Text("Masukkan nama dosen2") },
+        )
+        Text(text = errorState.dosen2 ?: "", color = Color.Red)
     }
 }

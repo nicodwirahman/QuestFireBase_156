@@ -1,4 +1,4 @@
-package com.example.firebase.ui.viewmodel
+package com.example.firebase.ui.viewmodel.Mahasiswa
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,14 +45,15 @@ class HomeViewModel(
         }
     }
 
-    fun deleteMahasiswa(mahasiswa: String){
+    fun deleteMahasiswa(mahasiswa: String) {
         viewModelScope.launch {
-            try{
+            try {
                 mhs.deleteMahasiswa((mahasiswa))
             } catch (e: Exception) {
                 mhsUiState = HomeUiState.Error(e)
             }
         }
+    }
+}
 
-    }    }
 

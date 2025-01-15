@@ -6,10 +6,12 @@ data class Mahasiswa(
     val alamat: String,
     val jenis_kelamin: String,
     val angkatan: String,
-    val kelas: String,
+    val dosen1: String,
+    val dosen2: String,
+    val judulSkripsi: String,
 )
 {
     constructor(
 
-    ):this("","","","","","")
+    ):this("","","","","","","","",)
 }

@@ -1,4 +1,4 @@
-package com.example.firebase.ui.viewmodel
+package com.example.firebase.ui.viewmodel.Mahasiswa
 
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
